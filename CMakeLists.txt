@@ -26,8 +26,5 @@ install(TARGETS prover rapidsnark test_prover
     BUNDLE DESTINATION ${CMAKE_INSTALL_PREFIX}/app
     LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 
-install(FILES "${GMP_LIB_DIR}/${GMP_LIB_FILE}"
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
-
 install(FILES src/prover.h
     DESTINATION ${CMAKE_INSTALL_PREFIX}/include)

@@ -43,7 +43,7 @@ build_host()
     mkdir "$BUILD_DIR"
     cd "$BUILD_DIR"
 
-    ../configure --prefix="$PACKAGE_DIR" --disable-shared &&
+    ../configure --prefix="$PACKAGE_DIR" --with-pic &&
     make -j$(nproc) &&
     make install
 
