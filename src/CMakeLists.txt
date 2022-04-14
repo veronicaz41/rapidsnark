@@ -33,12 +33,13 @@ include_directories(
     ../depends/json/single_include)
 
 
-add_library(rapidsnark STATIC ${LIB_SOURCES})
+add_library(rapidsnark SHARED ${LIB_SOURCES})
 
 add_executable(prover main_prover.cpp)
 
 
 target_link_libraries(prover rapidsnark ${GMP_LIB})
+target_link_libraries(rapidsnark ${GMP_LIB})
 
 if(USE_LOGGER)
     target_link_libraries(prover pthread)

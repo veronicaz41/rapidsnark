@@ -37,7 +37,7 @@ export ANDROID_NDK=/home/test/Android/Sdk/ndk/23.1.7779620  # NDK is installed b
 export ANDROID_NDK=/home/test/android-ndk-r23b              # NDK is installed as a stand-alone package.
 ````
 
-Compilation:
+Compilation for Android aarch64:
 
 ````sh
 git submodule init
@@ -45,6 +45,17 @@ git submodule update
 ./build_gmp.sh android
 mkdir build_prover_android && cd build_prover_android
 cmake .. -DTARGET_PLATFORM=ANDROID -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../package_android
+make -j$(nproc) && make install
+````
+
+Compilation for Android x86_64:
+
+````sh
+git submodule init
+git submodule update
+./build_gmp.sh android
+mkdir build_prover_android_x86_64 && cd build_prover_android_x86_64
+cmake .. -DTARGET_PLATFORM=ANDROID_X86_64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../package_android_x86_64
 make -j$(nproc) && make install
 ````
 
@@ -83,7 +94,7 @@ This prover parallelizes as much as it can the proof generation.
 
 The prover is much faster that snarkjs and faster than bellman.
 
-[TODO] Some comparation tests should be done.
+[TODO] Some comparison tests should be done.
 
 
 ## License

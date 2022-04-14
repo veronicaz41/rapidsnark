@@ -6,7 +6,27 @@ message("Building for " ${TARGET_PLATFORM})
 
 set(GMP_ROOT depends/gmp)
 
-if(TARGET_PLATFORM MATCHES "android")
+if(TARGET_PLATFORM MATCHES "android_x86_64")
+
+    if(NOT DEFINED ENV{ANDROID_NDK})
+        message("ANDROID_NDK environment variable is not set.")
+        message("It must be an absolute path to the root directory of Android NDK.")
+        message(" For instance /home/test/Android/Sdk/ndk/23.1.7779620")
+        message(FATAL_ERROR "Build failed.")
+    else()
+        message("Android NDK path is " $ENV{ANDROID_NDK})
+    endif()
+
+    set(CMAKE_SYSTEM_NAME Android)
+    set(CMAKE_SYSTEM_VERSION 23) # API level
+    set(CMAKE_ANDROID_ARCH_ABI x86_64)
+
+    message("CMAKE_ANDROID_ARCH_ABI=" ${CMAKE_ANDROID_ARCH_ABI})
+
+    set(GMP_PREFIX ${GMP_ROOT}/package_android_x86_64)
+    message("GMP_PREFIX " ${GMP_PREFIX})
+
+elseif(TARGET_PLATFORM MATCHES "android")
 
     if(NOT DEFINED ENV{ANDROID_NDK})
         message("ANDROID_NDK environment variable is not set.")

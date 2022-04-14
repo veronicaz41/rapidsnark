@@ -88,7 +88,53 @@ build_android()
     mkdir "$BUILD_DIR"
     cd "$BUILD_DIR"
 
-    ../configure --host $TARGET --prefix="$PACKAGE_DIR" --disable-shared --disable-fft &&
+    ../configure --host $TARGET --prefix="$PACKAGE_DIR" --with-pic --disable-fft &&
+    make -j$(nproc) &&
+    make install
+
+    cd ..
+}
+
+build_android_x86_64()
+{
+    PACKAGE_DIR="$GMP_DIR/package_android_x86_64"
+    BUILD_DIR=build_android_x86_64
+
+    if [ -d "$PACKAGE_DIR" ]; then
+        echo "Android package is built already. See $PACKAGE_DIR"
+        return 1
+    fi
+
+    if [ -z $ANDROID_NDK ]; then
+
+        echo "ERROR: ANDROID_NDK environment variable is not set."
+        echo "       It must be an absolute path to the root directory of Android NDK."
+        echo "       For instance /home/test/Android/Sdk/ndk/23.1.7779620"
+        return 1
+    fi
+
+    export TOOLCHAIN=$ANDROID_NDK/toolchains/llvm/prebuilt/linux-x86_64
+
+    export TARGET=x86_64-linux-android
+    export API=21
+
+    export AR=$TOOLCHAIN/bin/llvm-ar
+    export CC=$TOOLCHAIN/bin/$TARGET$API-clang
+    export AS=$CC
+    export CXX=$TOOLCHAIN/bin/$TARGET$API-clang++
+    export LD=$TOOLCHAIN/bin/ld
+    export RANLIB=$TOOLCHAIN/bin/llvm-ranlib
+    export STRIP=$TOOLCHAIN/bin/llvm-strip
+
+    echo $TOOLCHAIN
+    echo $TARGET
+
+    rm -rf "$BUILD_DIR"
+    mkdir "$BUILD_DIR"
+    cd "$BUILD_DIR"
+
+    #../configure --host $TARGET --prefix="$PACKAGE_DIR" --disable-shared --with-pic --enable-static --disable-fft &&
+    ../configure --host $TARGET --prefix="$PACKAGE_DIR" --with-pic --disable-fft &&
     make -j$(nproc) &&
     make install
 
@@ -158,6 +204,11 @@ case "$TARGET_PLATFORM" in
     "android" )
         echo "Building for android"
         build_android
+    ;;
+
+    "android_x86_64" )
+        echo "Building for android x86_64"
+        build_android_x86_64
     ;;
 
     "host" )
