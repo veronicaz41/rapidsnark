@@ -46,6 +46,7 @@ include_directories(
     ../depends/json/single_include)
 
 add_library(rapidsnarkStatic STATIC ${LIB_SOURCES})
+target_link_libraries(rapidsnarkStatic ${GMP_LIB})
 set_target_properties(rapidsnarkStatic PROPERTIES OUTPUT_NAME rapidsnark)
 
 add_executable(prover main_prover.cpp)
