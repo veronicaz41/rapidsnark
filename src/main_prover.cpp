@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
                                publicBuffer, &publicSize,
                                errorMessage, sizeof(errorMessage));
 
-        if (error == PPROVER_ERROR_SHORT_BUFFER) {
+        if (error == PROVER_ERROR_SHORT_BUFFER) {
 
             std::cerr << "Error: Short buffer for proof or public" << '\n';
             return EXIT_FAILURE;

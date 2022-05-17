@@ -76,7 +76,7 @@ int groth16_prover(const void *zkey_buffer,   unsigned long  zkey_size,
             *proof_size  = proofMinSize;
             *public_size = publicMinSize;
 
-            return PPROVER_ERROR_SHORT_BUFFER;
+            return PROVER_ERROR_SHORT_BUFFER;
         }
 
         VerifyPrimes(zkeyHeader->rPrime, wtnsHeader->prime);
@@ -112,7 +112,7 @@ int groth16_prover(const void *zkey_buffer,   unsigned long  zkey_size,
             *proof_size  = stringProofSize;
             *public_size = stringPublicSize;
 
-            return PPROVER_ERROR_SHORT_BUFFER;
+            return PROVER_ERROR_SHORT_BUFFER;
         }
 
         std::strncpy(proof_buffer, stringProof.data(), *proof_size);
@@ -131,13 +131,13 @@ int groth16_prover(const void *zkey_buffer,   unsigned long  zkey_size,
             strncpy(error_msg, e->what(), error_msg_maxsize);
         }
         delete e;
-        return PPROVER_ERROR;
+        return PROVER_ERROR;
 
     } catch (...) {
         if (error_msg) {
             strncpy(error_msg, "unknown error", error_msg_maxsize);
         }
-        return PPROVER_ERROR;
+        return PROVER_ERROR;
     }
 
     return PROVER_OK;

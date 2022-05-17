@@ -8,7 +8,7 @@ extern "C" {
 //Error codes returned by the functions.
 #define PROVER_OK                  0x0
 #define PROVER_ERROR               0x1
-#define PPROVER_ERROR_SHORT_BUFFER  0x2
+#define PROVER_ERROR_SHORT_BUFFER  0x2
 
 
 /**
