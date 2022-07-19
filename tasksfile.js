@@ -88,11 +88,36 @@ function buildProver() {
     );
 }
 
+function buildProverMac() {
+    sh("g++" +
+        " -I."+
+        " -I../src"+
+        " -I../depends/ffiasm/c"+
+        " -I../depends/json/single_include"+
+        " ../src/main_prover.cpp"+
+        " ../src/binfile_utils.cpp"+
+        " ../src/zkey_utils.cpp"+
+        " ../src/wtns_utils.cpp"+
+        " ../src/logger.cpp"+
+        " ../depends/ffiasm/c/misc.cpp"+
+        " ../depends/ffiasm/c/naf.cpp"+
+        " ../depends/ffiasm/c/splitparstr.cpp"+
+        " ../depends/ffiasm/c/alt_bn128.cpp"+
+        " fq.cpp"+
+        " fq.o"+
+        " fr.cpp"+
+        " fr.o"+
+        " -o prover" +
+        " -fmax-errors=5 -std=c++17 -pthread -lgmp -lsodium -O3 -Xclang -fopenmp -lomp", {cwd: "build", nopipe: true}
+    );
+}
+
 
 cli({
     cleanAll,
     createFieldSources,
     buildPistche,
     buildProverServer,
-    buildProver
+    buildProver,
+    buildProverMac,
 });
