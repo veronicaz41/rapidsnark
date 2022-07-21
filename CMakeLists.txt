@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 include(cmake/platform.cmake)
 
 set(USE_ASM    ON CACHE BOOL "Use asm implementation for Fr and Fq")
-set(USE_OPENMP ON CACHE BOOL "Use OpenMP")
+set(USE_OPENMP OFF CACHE BOOL "Use OpenMP")
 
 project(rapidsnark LANGUAGES CXX)
 
