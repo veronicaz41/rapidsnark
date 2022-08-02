@@ -50,7 +50,7 @@ elseif(TARGET_PLATFORM MATCHES "ios")
     set(CMAKE_SYSTEM_NAME iOS)
     set(CMAKE_OSX_ARCHITECTURES arm64)
 
-    set(GMP_PREFIX ${GMP_ROOT}/package_ios_arm64)
+    set(GMP_PREFIX ${GMP_ROOT}/package_ios_simulator)
 
 else()
     set(GMP_PREFIX ${GMP_ROOT}/package)

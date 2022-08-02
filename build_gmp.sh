@@ -7,6 +7,7 @@ usage()
     echo "    android:        build for Android arm64"
     echo "    android_x86_64: build for Android x86_64"
     echo "    ios:            build for iOS arm64"
+    echo "    ios-simulator:  build for iOS simulator"
     echo "    host:           build for this host"
 
     exit 1
@@ -179,6 +180,44 @@ build_ios()
     cd ..
 }
 
+build_ios_simulator()
+{
+    PACKAGE_DIR="$GMP_DIR/package_ios_simulator"
+    BUILD_DIR=build_ios_simulator
+
+    if [ -d "$PACKAGE_DIR" ]; then
+        echo "iOS package is built already. See $PACKAGE_DIR"
+        return 1
+    fi
+
+    export SDK="iphonesimulator"
+    export TARGET=aarch64-apple-darwin
+    export MIN_IOS_VERSION=8.0
+
+    export ARCH_FLAGS="-arch x86_64"
+    export OPT_FLAGS="-O3 -g3 -fembed-bitcode"
+    export HOST_FLAGS="${ARCH_FLAGS} -miphoneos-version-min=${MIN_IOS_VERSION} -isysroot $(xcrun --sdk ${SDK} --show-sdk-path)"
+
+    export CC=$(xcrun --find --sdk "${SDK}" clang)
+    export CXX=$(xcrun --find --sdk "${SDK}" clang++)
+    export CPP=$(xcrun --find --sdk "${SDK}" cpp)
+    export CFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
+    export CXXFLAGS="${HOST_FLAGS} ${OPT_FLAGS}"
+    export LDFLAGS="${HOST_FLAGS}"
+
+    echo $TARGET
+
+    rm -rf "$BUILD_DIR"
+    mkdir "$BUILD_DIR"
+    cd "$BUILD_DIR"
+
+    ../configure --host $TARGET --prefix="$PACKAGE_DIR" --with-pic --disable-fft --disable-assembly &&
+    make -j$(nproc) &&
+    make install
+
+    cd ..
+}
+
 
 if [ $# -ne 1 ]; then
     usage
@@ -199,6 +238,11 @@ case "$TARGET_PLATFORM" in
     "ios" )
         echo "Building for ios"
         build_ios
+    ;;
+
+    "ios-simulator" )
+        echo "Building for ios simulator"
+        build_ios_simulator
     ;;
 
     "android" )
