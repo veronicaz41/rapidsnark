@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <CoreFoundation/CFURL.h>
+#include <CoreFoundation/CFBundle.h>
 
 #include "fileloader.hpp"
 #include "prover.h"
@@ -11,20 +13,26 @@
 
 const size_t BufferSize = 16384;
 
+std::string get_path(const char *name, const char *extension) {
+    CFBundleRef mainBundle = CFBundleGetMainBundle();
+    // Get a reference to the file's URL
+    CFURLRef imageURL = CFBundleCopyResourceURL(mainBundle, CFStringCreateWithCString(NULL, name, kCFStringEncodingUTF8), CFStringCreateWithCString(NULL, extension, kCFStringEncodingUTF8), NULL);
+    // Convert the URL reference into a string reference
+    CFStringRef imagePath = CFURLCopyFileSystemPath(imageURL, kCFURLPOSIXPathStyle);
+    // Get the system encoding method
+    CFStringEncoding encodingMethod = CFStringGetSystemEncoding();
+    // Convert the string reference into a C string
+    const char *path = CFStringGetCStringPtr(imagePath, encodingMethod);
+    std::string parent = path;
+    return parent;
+}
 
 int main(int argc, char **argv) {
-
-    if (argc != 5) {
-        std::cerr << "Invalid number of parameters:\n";
-        std::cerr << "Usage: prove <circuit.zkey> <witness.wtns> <proof.json> <public.json>\n";
-        return EXIT_FAILURE;
-    }
-
     try {
-        std::string zkeyFilename = argv[1];
-        std::string wtnsFilename = argv[2];
-        std::string proofFilename = argv[3];
-        std::string publicFilename = argv[4];
+        std::string zkeyFilename = get_path("circuit", "zkey");
+        std::string wtnsFilename = get_path("witness", "wtns");
+        std::string proofFilename = get_path("proof", "json");
+        std::string publicFilename = get_path("public", "json");;
 
         char proofBuffer[BufferSize];
         char publicBuffer[BufferSize];
