@@ -21,6 +21,11 @@ ios:
 	cmake .. -GXcode -DTARGET_PLATFORM=IOS -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../package_ios && \
     echo "" && echo "Now open Xcode and compile the generated project" && echo ""
 
+ios-simulator:
+	rm -rf build_prover_ios && mkdir build_prover_ios && cd build_prover_ios && \
+	cmake .. -GXcode -DTARGET_PLATFORM=IOS_SIMULATOR -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=../package_ios_simulator && \
+    echo "" && echo "Now open Xcode and compile the generated project" && echo ""
+
 clean:
 	rm -rf build_prover build_prover_android build_prover_android_x86_64 build_prover_ios package package_android \
 		package_android_x86_64 package_ios depends/gmp/package depends/gmp/package_android_arm64 \

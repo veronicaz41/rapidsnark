@@ -45,12 +45,19 @@ elseif(TARGET_PLATFORM MATCHES "android")
 
     set(GMP_PREFIX ${GMP_ROOT}/package_android_arm64)
 
-elseif(TARGET_PLATFORM MATCHES "ios")
+elseif(TARGET_PLATFORM MATCHES "ios_simulator")
 
     set(CMAKE_SYSTEM_NAME iOS)
     set(CMAKE_OSX_ARCHITECTURES arm64)
 
     set(GMP_PREFIX ${GMP_ROOT}/package_ios_simulator)
+
+elseif(TARGET_PLATFORM MATCHES "ios")
+
+    set(CMAKE_SYSTEM_NAME iOS)
+    set(CMAKE_OSX_ARCHITECTURES arm64)
+
+    set(GMP_PREFIX ${GMP_ROOT}/package_ios_arm64)
 
 else()
     set(GMP_PREFIX ${GMP_ROOT}/package)
